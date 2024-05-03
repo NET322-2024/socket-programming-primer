@@ -18,20 +18,18 @@ public class MultiThreadEchoServer {
 
                 System.out.printf("SUCCESS : Server bound and listening at %s\n",
                         serverSocket.getLocalSocketAddress().toString().split("/")[1]);
-
+                ExecutorService threadPoolService = Executors.newFixedThreadPool(5);
                 while (true) {
                     try {
-                       
+
                         // Accept incoming connections
                         Socket clientSocket = serverSocket.accept();
-                        
+
                         try {
-                            ExecutorService threadPoolService = Executors.newFixedThreadPool(5);
                             threadPoolService.execute(new ClientWorker(clientSocket));
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
-                        
 
                     } catch (Exception e) {
                         // Terminates loop
@@ -41,7 +39,6 @@ public class MultiThreadEchoServer {
                 }
             }
 
-            
         } catch (IOException ioException) {
             ioException.printStackTrace();
         }
